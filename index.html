@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventHub - Gestion d'événements étudiants</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">EventHub</div>
+        <ul class="nav-links">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#presentation">Présentation</a></li>
+            <li><a href="#evenements">Événements</a></li>
+            <li><a href="#comment-ca-marche">Comment ça marche</a></li>
+        </ul>
+        <div class="auth-buttons">
+            <a href="#" class="btn btn-outline" onclick="showLogin()">Connexion</a>
+            <a href="#" class="btn btn-primary" onclick="showRegister()">Inscription</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="accueil">
+        <div class="hero-content">
+            <h1>Gérez et participez<br>À vos événements en ligne</h1>
+            <p>Avec EventHub, accédez à un dashboard avancé, vous permettant de publier et de participer à des événements étudiants.</p>
+            <a href="#" class="btn btn-primary" onclick="showRegister()" style="display: inline-block;">Rejoignez nous</a>
+        </div>
+        <div class="circle-decoration"></div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stat-card">
+            <div class="stat-number" data-count="500">0</div>
+            <div class="stat-label">Événements organisés</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" data-count="2500">0</div>
+            <div class="stat-label">Étudiants inscrits</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" data-count="150">0</div>
+            <div class="stat-label">Organisateurs actifs</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" data-count="95">0</div>
+            <div class="stat-label">% de satisfaction</div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="presentation">
+        <h2 class="section-title">Pourquoi choisir EventHub ?</h2>
+        <p class="section-subtitle">Une plateforme complète pour gérer tous vos événements étudiants</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-regular fa-calendar"></i></i></div>
+                <h3>Gestion simplifiée</h3>
+                <p>Créez et gérez vos événements en quelques clics. Interface intuitive et rapide pour les organisateurs.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-ticket"></i></div>
+                <h3>Inscription facile</h3>
+                <p>Inscrivez-vous aux événements instantanément.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-chart-simple"></i></div>
+                <h3>Statistiques en temps réel</h3>
+                <p>Suivez le nombre d'inscrits, le taux de participation et les statistiques détaillées de vos événements.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-bell"></i></div>
+                <h3>Notifications automatiques</h3>
+                <p>Recevez des rappels avant chaque événement. Ne manquez plus jamais un événement important.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-cloud-sun-rain"></i></div>
+                <h3>Intégration météo</h3>
+                <p>Consultez la météo prévue pour les événements en extérieur et planifiez en conséquence.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-map"></i></div>
+                <h3>Localisation interactive</h3>
+                <p>Trouvez facilement le lieu de l'événement avec nos cartes interactives et itinéraires optimisés.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Types Section -->
+    <section class="event-types" id="evenements">
+        <h2 class="section-title">Types d'événements</h2>
+        <p class="section-subtitle">Découvrez la diversité des événements proposés</p>
+        
+        <div class="event-types-grid">
+            <div class="event-type-card">
+                <div class="event-type-icon"><i class="fa-solid fa-briefcase"></i></div>
+                <h3>Ateliers</h3>
+                <p>Formations pratiques et sessions hands-on</p>
+            </div>
+            <div class="event-type-card">
+                <div class="event-type-icon"><i class="fa-solid fa-microphone"></i></div>
+                <h3>Conférences</h3>
+                <p>Présentations et talks inspirants</p>
+            </div>
+            <div class="event-type-card">
+                <div class="event-type-icon"><i class="fa-solid fa-champagne-glasses"></i></div>
+                <h3>Soirées</h3>
+                <p>Événements festifs et networking</p>
+            </div>
+            <div class="event-type-card">
+                <div class="event-type-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                <h3>Hackathons</h3>
+                <p>Compétitions de programmation 24h</p>
+            </div>
+            <div class="event-type-card">
+                <div class="event-type-icon"><i class="fa-solid fa-book"></i></div>
+                <h3>Séminaires</h3>
+                <p>Sessions d'apprentissage approfondies</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="features" id="comment-ca-marche">
+        <h2 class="section-title">Comment ça marche ?</h2>
+        <p class="section-subtitle">Rejoignez EventHub en 3 étapes simples</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-1"></i></div>
+                <h3>Inscrivez-vous</h3>
+                <p>Créez votre compte gratuitement en quelques secondes avec votre email étudiant.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-2"></i></div>
+                <h3>Découvrez les événements</h3>
+                <p>Parcourez les événements disponibles, filtrez par type, date ou localisation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-3"></i></div>
+                <h3>Participez !</h3>
+                <p>Inscrivez-vous en un clic, recevez votre QR code et profitez de l'événement.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Prêt à commencer ?</h2>
+        <p>Rejoignez des milliers d'étudiants qui utilisent déjà EventHub</p>
+        <a href="#" class="btn btn-primary" onclick="showRegister()" style="display: inline-block;">Créer mon compte gratuitement</a>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">À propos</a>
+                <a href="#">Contact</a>
+                <a href="#">CGU</a>
+                <a href="#">Politique de confidentialité</a>
+                <a href="#">FAQ</a>
+            </div>
+            <div class="copyright">
+                © 2024 EventHub. Tous droits réservés.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Counter animation for stats
+        function animateCounter(element, start, end, duration) {
+            let current = start;
+            const increment = (end - start) / (duration / 16);
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= end) {
+                    element.textContent = end + (element.textContent.includes('%') ? '%' : '+');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + (element.textContent.includes('%') ? '%' : '+');
+                }
+            }, 16);
+        }
+
+        // Intersection Observer for stats animation
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = entry.target;
+                    const count = parseInt(target.getAttribute('data-count'));
+                    animateCounter(target, 0, count, 2000);
+                    statsObserver.unobserve(target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-number').forEach(stat => {
+            statsObserver.observe(stat);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Placeholder functions for login/register
+        function showLogin() {
+            window.location.href = './pages/login/login.html';
+        }
+
+        function showRegister() {
+            window.location.href = './pages/login/login.html';
+        }
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(255, 255, 255, 0.98)';
+                nav.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.1)';
+            } else {
+                nav.style.background = 'rgba(255, 255, 255, 0.95)';
+                nav.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
+            }
+        });
+    </script>
+</body>
+</html>
