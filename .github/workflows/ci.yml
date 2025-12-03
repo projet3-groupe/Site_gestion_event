@@ -22,17 +22,18 @@ jobs:
       - name: Install dependencies
         working-directory: ./backend
         run: npm install
-sonarcloud:
+
+  sonarcloud:
     name: SonarCloud Scan
-    needs: build-and-test        # attend que le job build-and-test soit ok
+    needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0         # recommandé pour une meilleure analyse
-          
+          fetch-depth: 0   # recommandé pour SonarCloud
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
