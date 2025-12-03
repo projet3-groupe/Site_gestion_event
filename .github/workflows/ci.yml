@@ -46,3 +46,16 @@ jobs:
             -Dsonar.projectKey=projet3-groupe_Site_gestion_event
             -Dsonar.sources=.
             -Dsonar.qualitygate.wait=true
+
+  zap-baseline:
+     needs: build-and-test
+     runs-on: ubuntu-latest
+
+     steps:
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.10.0
+        with:
+          target: "https://ton-environnement-de-test.example.com"
+          rules_file_name: ".zap/rules.tsv"
+          cmd_options: "-a"
+  
