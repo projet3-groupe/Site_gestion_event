@@ -1,16 +1,10 @@
-name: Backend CI Pipeline
+name: Run Backend Security Tests - EventHub
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   backend-security-tests:
-    name: Run Backend Security Tests - EventHub
     runs-on: ubuntu-latest
 
     services:
@@ -28,41 +22,56 @@ jobs:
           --health-retries=5
 
     steps:
-      - name: 🔄 Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: 🟦 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: backend/package-lock.json
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: npm
+        cache-dependency-path: backend/package-lock.json
 
-      - name: 📦 Install backend dependencies
-        working-directory: ./backend
-        run: npm ci
+    - name: Install backend dependencies
+      working-directory: backend
+      run: npm ci
 
-      - name: 🏁 Start backend server
-        working-directory: ./backend
-        run: |
-          echo "Starting backend server..."
-          nohup npm start > server.log 2>&1 &
-          sleep 5
-          echo "Backend started."
+    ########################################
+    # 🔥 On génère ton .env dans GitHub Actions
+    ########################################
+    - name: Generate .env file for CI
+      working-directory: backend
+      run: |
+        echo "JWT_SECRET=4c03abc78244a1e8691a3f8121f04ca8" > .env
+        echo "DB_HOST=127.0.0.1" >> .env
+        echo "DB_USER=root" >> .env
+        echo "DB_PASSWORD=root" >> .env
+        echo "DB_NAME=eventhub" >> .env
+        echo "DB_PORT=3306" >> .env
+        echo "ALLOWED_ORIGINS=http://localhost:3000,https://site-gestion-event.vercel.app,http://localhost:5500" >> .env
+        echo "NODE_ENV=test" >> .env
+        echo "LOG_LEVEL=info" >> .env
 
-      - name: 🔐 Run security tests
-        working-directory: ./backend
-        env:
-          DB_HOST: 127.0.0.1
-          DB_USER: root
-          DB_PASSWORD: root
-          DB_NAME: eventhub
-          DB_PORT: 3306
-          NODE_ENV: test
-          JWT_SECRET: testsecret
-          ALLOWED_ORIGINS: http://localhost:3000,https://site-gestion-event.vercel.app,http://localhost:5500
-        run: npm run test:security
+    ########################################
+    # 🚀 On démarre le backend AVEC l'env
+    ########################################
+    - name: Start backend
+      working-directory: backend
+      run: |
+        nohup npm start > server.log 2>&1 &
+        sleep 7
 
-      - name: 📝 Show backend server logs on failure
-        if: failure()
-        run: cat backend/server.log
+    ########################################
+    # 🔒 Tests de sécurité
+    ########################################
+    - name: Run security tests
+      working-directory: backend
+      run: npm run test:security
+
+    ########################################
+    # 📝 Logs en cas d'erreur
+    ########################################
+    - name: Show backend logs
+      if: always()
+      working-directory: backend
+      run: cat server.log
