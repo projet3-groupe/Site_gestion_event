@@ -84,10 +84,7 @@ jobs:
         working-directory: ./backend
         run: npm run test:security
         continue-on-error: true
-      
-      - name: Run security tests
-        working-directory: ./backend
-        run: npm run test:security
+  
 
       - name: Start app (smoke test optionnel)
         working-directory: ./backend
