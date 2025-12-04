@@ -1,13 +1,16 @@
-name: Backend CI
+name: Backend CI Pipeline
 
 on:
   push:
-    branches: [ main, master ]
+    branches:
+      - main
   pull_request:
-    branches: [ main, master ]
+    branches:
+      - main
 
 jobs:
-  build-and-test:
+  backend-security-tests:
+    name: Run Backend Security Tests - EventHub
     runs-on: ubuntu-latest
 
     services:
@@ -19,52 +22,47 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h localhost -proot"
+          --health-cmd="mysqladmin ping -h localhost"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=10
-
-    env:
-      DB_HOST: 127.0.0.1
-      DB_USER: root
-      DB_PASSWORD: root
-      DB_NAME: eventhub
-      DB_PORT: 3306
-      NODE_ENV: test
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      # ATTENTION : pas de Markdown ici, juste une chaîne normale
-      ALLOWED_ORIGINS: http://localhost:3000,https://site-gestion-event.vercel.app,http://localhost:5500
+          --health-retries=5
 
     steps:
-      - name: Checkout code
+      - name: 🔄 Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 🟦 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: backend/package-lock.json
 
-      - name: Install dependencies
+      - name: 📦 Install backend dependencies
         working-directory: ./backend
         run: npm ci
 
-      - name: Wait for MySQL
-        run: |
-          for i in `seq 1 30`; do
-            (echo "select 1" | mysql -h 127.0.0.1 -uroot -proot eventhub) && break
-            echo "MySQL not ready yet..."
-            sleep 2
-          done
-
-      - name: Run security tests
+      - name: 🏁 Start backend server
         working-directory: ./backend
+        run: |
+          echo "Starting backend server..."
+          nohup npm start > server.log 2>&1 &
+          sleep 5
+          echo "Backend started."
+
+      - name: 🔐 Run security tests
+        working-directory: ./backend
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: eventhub
+          DB_PORT: 3306
+          NODE_ENV: test
+          JWT_SECRET: testsecret
+          ALLOWED_ORIGINS: http://localhost:3000,https://site-gestion-event.vercel.app,http://localhost:5500
         run: npm run test:security
 
-      - name: Start app (smoke test optionnel)
-        working-directory: ./backend
-        run: |
-          npm start &
-          sleep 5
-          curl -f http://localhost:3000/api/health
+      - name: 📝 Show backend server logs on failure
+        if: failure()
+        run: cat backend/server.log
