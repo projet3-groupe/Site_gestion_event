@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: ./backend
+        run: npm install
+
+  sonarcloud:
+    name: SonarCloud Scan
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # recommandé
+
+      - name: SonarQube Scan (SonarCloud)
+        uses: sonarsource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+        with:
+          projectBaseDir: backend
+          args: >
+            -Dsonar.organization=projet3-groupe
+            -Dsonar.projectKey=projet3-groupe_Site_gestion_event
+            -Dsonar.sources=.
+            -Dsonar.qualitygate.wait=true
+
+  zap-baseline:
+     needs: build-and-test
+     runs-on: ubuntu-latest
+
+     steps:
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.10.0
+        with:
+          target: "https://site-gestion-event.vercel.app/"
+          rules_file_name: ".zap/rules.tsv"
+          cmd_options: "-a"
